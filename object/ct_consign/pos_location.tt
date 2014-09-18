@@ -1,0 +1,24 @@
+[% IF s.agent %]
+<div class="span5">
+	<h2>Choose Location</h2>
+	<ul class="nav nav-tabs nav-stacked">
+[% FOREACH l IN list %]
+		<li><a href="[% s.uof %]?location_id=[% l.location_id %]">[% l.name %]</a></li>
+[% END %]
+	</ul>
+</div>
+</div>
+[% ELSE %]
+<div class="floatleft">
+<table>
+	<caption>Choose Location</caption>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td><a href="[% s.uof %]?location_id=[% l.location_id %]">[% l.name %]</a></td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+[% END %]

@@ -1,0 +1,38 @@
+<form method="POST" action="[% s.uof %]">
+[% s.html_hidden('process',1) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Create Consignment Account</caption>
+	<tbody>
+		<tr>
+			<th>Name</th>
+			<td>[% s.html_input('name',s.in.name,50) %]</td>
+		</tr>
+		<tr>
+			<th>ID</th>
+			<td>[% s.html_input_number('ct_consign_id',s.in.ct_consign_id,5) %]
+			(leave blank for automatic ID assignment)
+			</td>
+		</tr>
+		<tr>
+			<th>Account Type</th>
+			<td>
+			[% s.html_radio('cash','true',s.in.cash,'Cash') %]
+			[% s.html_radio('cash','false',s.in.cash,'Credit') %]
+			</td>
+		</tr>
+		<tr>
+			<th>Consign Percent</th>
+			<td>[% s.html_input_number('consign_percent',s.in.consign_percent,4) %]
+			(i.e: 0.35 for 35%)
+			</td>
+		</tr>
+		<tr>
+			<th>Consign Fee</th>
+			<td>[% s.html_input_number('consign_fee',s.in.consign_fee,8) %] (for vendors)</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Create Account','btn btn-primary') %]
+</div>
+</form>

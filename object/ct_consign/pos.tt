@@ -1,0 +1,190 @@
+<script>
+function addRowToTable()
+{
+  var tbl = document.getElementById('tbl');
+  var lastRow = tbl.rows.length;
+  // if there's no header row in the table, then iteration = lastRow + 1
+  var iteration = lastRow;
+  var row = tbl.insertRow(lastRow);
+  
+  // left cell
+  var cellLeft = row.insertCell(0);
+  var el = document.createElement('input');
+  el.type = 'number';
+  el.step = '0.01';
+  el.name = 'line:' + iteration + ':item_id';
+  el.size = 6;
+  var textNode = document.createTextNode(iteration);
+  cellLeft.appendChild(el);
+  
+  // right cell
+  var cellRight = row.insertCell(1);
+  var elp = document.createElement('input');
+  elp.type = 'number';
+  elp.step = '0.01';
+  elp.name = 'line:' + iteration + ':unit_price';
+  elp.size = 8;
+  
+  //el.onkeypress = keyPressTest;
+  cellRight.appendChild(elp);
+}
+</script>
+<div class="floatleft" style="clear: both;">
+<form method="POST" action="[% s.uofs %]" name="form">
+[% s.html_hidden('order_id',hash.order_id) %]
+[% s.html_hidden('additem',1) %]
+<table class="table" id="tbl">
+	<caption>Add Item</caption>
+	<thead>
+		<tr>
+			<th>ItemID</th>
+			<th>Unit Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>[% s.html_input_number('line:1:item_id','',6) %]</td>
+			<td>[% s.html_input_number('line:1:unit_price','',8) %]</td>
+		</tr>
+	</tbody>
+</table>
+<table width="100%">
+	<tr>
+		<td width="50%">
+<input type="button" value="New Line" class="btn btn-secondary" onclick="addRowToTable();">
+		</td>
+		<td width="50%">
+[% s.html_submit("Add Items",'btn btn-primary') %]
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+<script>
+\$(function() {
+	\$("#search").autocomplete({
+		source: function(request, response) {
+			jQuery.ajax({
+				url: "[% s.uof %]/search",
+				type: "post",
+				dataType: "json",
+				data: {
+					q: request.term,
+					order_id: '[% s.in.order_id %]',
+				},
+				success: function(data) {
+					response(jQuery.map(data, function(item) {
+						return {
+							url: item.url,
+							value: item.name
+						}
+					}))
+				}
+			})
+		},
+		select: function( event, ui ) {
+			window.location.href = ui.item.url;
+		},
+		minLength: 2
+	});
+});
+</script>
+<div class="floatleft" style="clear: both;">
+<table class="table">
+	<caption>[% hash.location_name %] - [% hash.order_id %]</caption>
+	<thead>
+		<tr>
+			<th colspan="4">Customer</th>
+		</tr>
+		<tr>
+			<td colspan="4">[% s.html_search('search',30) %]</td>
+		</tr>
+		<tr>
+			<td colspan="4">[% hash.customer_name %][% IF hash.customer_id != s.cash_customer_id %] <a href="[% s.uof %]/setcustomer?order_id=[% s.in.order_id %]&customer_id=[% s.cash_customer_id %]" class="action">Clear</a>[% END %]
+[% IF hash.balance.gl_credit_balance != '0.00' %]<br><b>Credit Balance: [% hash.balance.gl_credit_balance %]</b>[% END %]
+[% IF hash.balance.remaining_balance %]<br><b>Remaining Balance: [% hash.balance.remaining_balance %]</b>[% END %]
+			</td>
+		</tr>
+		<tr>
+			[% IF hash.discount %]
+			<th>Discount</th>
+			[% ELSE %]
+			<th>&nbsp;</th>
+			[% END %]
+			<th>ItemID</th>
+			<th class="n">Total Price</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN hash.item_display %]
+	[% FOREACH x IN l.data %]
+		[% FOREACH i IN x.data %]
+		<tr>
+			[% IF hash.discount %]
+			<td>
+			[% IF i.discounted %]
+			Yes&nbsp;<a href="[% s.uof %]/discount?order_id=[% hash.order_id %]&order_item_id=[% i.order_item_id %]&f=remove" class="action">Remove</a>
+			[% ELSE %]
+			No&nbsp;<a href="[% s.uof %]/discount?order_id=[% hash.order_id %]&order_item_id=[% i.order_item_id %]&f=add" class="action">Add</a>
+			[% END %]
+			</td>
+			[% ELSE %]
+			<td>&nbsp;</td>
+			[% END %]
+			<td>[% IF i.item_type == 'item' %][% i.item_id %][% ELSE %][% i.description %][% END %]</td>
+			<td class="n">[% s.format_number(i.total_price) %]</td>
+			<td><a href="[% s.uofs %]?delete=[% i.order_item_id %]&order_id=[% hash.order_id %]" class="action">delete</a></td>
+		</tr>
+		[% END %]
+	[% END %]
+[% END %]
+		<tr>
+			<th class="n" colspan="2">Tax</th>
+			<td class="n">[% s.format_number(hash.summary.tax) %]</td>
+		</tr>
+		<tr>
+			<th class="n" colspan="2">Total</th>
+			<td class="n">[% s.format_number(hash.summary.total) %]</td>
+		</tr>
+[% IF hash.discount %]
+		<tr>
+			<th class="n" colspan="2">Discount</th>
+			<td class="n">[% hash.discount %]%</td>
+			<td><a href="[% s.uof %]/deletediscount?order_id=[% hash.order_id %]" class="action">delete</a></td>
+		</tr>
+[% END %]
+[% IF hash.payments.size %]
+		<tr>
+			<th class="n" colspan="2">Balance</th>
+			<td class="n[% IF hash.balance.order_balance != '0.00' %] redtext[% END %]">[% s.format_number(hash.balance.order_balance) %]</td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+[% IF hash.payments.size %]
+<div class="floatleft" style="clear: both;">
+<table>
+	<caption>Payments</caption>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th class="n">Change</th>
+			<th class="n">Amount</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN hash.payments %]
+		<tr>
+			<td>[% l.payment_method_name %][% IF l.gift_card_id %]-[% s.html_display_link('gift_card',l.gift_card_id,l.gift_card_id) %][% END %]</td>
+			<td class="n">[% s.format_number(l.cash_change) %]</td>
+			<td class="n">[% s.format_number(l.amount) %]</td>
+			<td><a href="[% s.uofs %]?deletep=[% l.order_payment_id %]&order_id=[% hash.order_id %]" class="action">delete</a></td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+[% END %]

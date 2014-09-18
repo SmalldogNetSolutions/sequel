@@ -1,0 +1,30 @@
+<div class="floatleft">
+<table class="table">
+	<caption>Insufficient Balance</caption>
+	<tbody>
+		<tr>
+			<td>
+<p><b>[% hash.name %]</b> has a credit balance of [% hash.balance %].</p>
+<p>This sale for [% s.in.amount %] would put their balance at <b>[% hash.end_balance %]</b>.</p>
+			</td>
+		</tr>
+[% IF hash.balance > 0 %]
+		<tr>
+			<td align="center">
+				<a href="[% s.uofs %]?ct_consign_id=[% s.in.ct_consign_id %]&process=1&order_id=[% s.in.order_id %]&payment_method_id=[% s.in.payment_method_id %]&use_amount=[% hash.balance %]" class="action">Just use [% hash.balance %]</a>
+			</td>
+		</tr>
+[% END %]
+		<tr>
+			<td align="center">
+				<a href="[% s.uofs %]?ct_consign_id=[% s.in.ct_consign_id %]&process=1&order_id=[% s.in.order_id %]&payment_method_id=[% s.in.payment_method_id %]&use_amount=[% s.in.amount %]" class="action">Overdraw and use [% s.in.amount %]</a>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<a href="[% s.uofs %]?order_id=[% s.in.order_id %]" class="action">Start Over</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

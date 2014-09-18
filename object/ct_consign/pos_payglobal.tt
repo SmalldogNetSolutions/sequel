@@ -1,0 +1,79 @@
+<script>
+\$(function() {
+	\$("#search").autocomplete({
+		source: function(request, response) {
+			jQuery.ajax({
+				url: "[% s.uof %]/search",
+				type: "post",
+				dataType: "json",
+				data: {
+					q: request.term,
+					payment_form: '1'
+				},
+				success: function(data) {
+					response(jQuery.map(data, function(item) {
+						return {
+							ct_consign_id: item.ct_consign_id,
+							value: item.name
+						}
+					}))
+				}
+			})
+		},
+		select: function( event, ui ) {
+			\$('#search').val(ui.item.value);
+			\$('#ct_consign_id').val(ui.item.ct_consign_id);
+		},
+		minLength: 2
+	});
+});
+</script>
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('order_id',s.in.order_id) %]
+[% s.html_hidden('process',1) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Pay [% pm.name %]</caption>
+	<tbody>
+		<tr>
+			<th>Method</th>
+			<td>
+[% FOREACH l IN list %]
+	<input type="radio" name="payment_method_id" value="[% l.payment_method_id %]"[% IF l.payment_method_id == s.in.payment_method_id %] checked[% END %][% IF l.store_credit %] onclick="\$('#credit').show();\$('#gift').hide(); return true;"[% ELSIF l.gift_card %] onclick="\$('#credit').hide();\$('#gift').show(); return true;"[% ELSE %] onclick="\$('#credit').hide();\$('#gift').hide(); return true;"[% END %]>[% l.name %]<br>
+[% END %]
+	<div id="credit" style="display: [% IF pm.store_credit %]block[% ELSE %]none[% END %];">
+	<input type="hidden" name="ct_consign_id" id="ct_consign_id" value="[% s.in.ct_consign_id %]">
+<table class="table">
+	<tbody>
+		<tr>
+			<th>Customer</th>
+		</tr>
+		<tr>
+			<td>[% s.html_search('search',30) %]</td>
+		</tr>
+	</tbody>
+</table>
+	</div>
+	<div id="gift" style="display: [% IF pm.gift_card %]block[% ELSE %]none[% END %];">
+<table class="table">
+	<tbody>
+		<tr>
+			<th>GiftCardNumber</th>
+		</tr>
+		<tr>
+			<td>[% s.html_input('gift_card_id',s.in.gift_card_id,20) %]</td>
+		</tr>
+	</tbody>
+</table>
+	</div>
+			</td>
+		</tr>
+		<tr>
+			<th>Amount</th>
+			<td>[% s.html_input_number('amount',s.in.amount || hash.balance,8) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Save','btn btn-primary') %]
+</div>
+</form>

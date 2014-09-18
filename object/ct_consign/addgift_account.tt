@@ -1,0 +1,42 @@
+<script>
+\$(function() {
+	\$("#search").autocomplete({
+		source: function(request, response) {
+			jQuery.ajax({
+				url: "[% s.uof %]/search",
+				type: "post",
+				dataType: "json",
+				data: {
+					q: request.term,
+					account_amount: '[% s.in.account_amount %]',
+					order_id: '[% s.in.order_id %]',
+					account: '1'
+				},
+				success: function(data) {
+					response(jQuery.map(data, function(item) {
+						return {
+							url: item.url,
+							value: item.name
+						}
+					}))
+				}
+			})
+		},
+		select: function( event, ui ) {
+			window.location.href = ui.item.url;
+		},
+		minLength: 2
+	});
+});
+</script>
+<div class="floatleft">
+<table class="table">
+	<caption>Apply Gift Amount to Account</caption>
+	<tbody>
+		<tr>
+			<th>Customer</th>
+			<td>[% s.html_search('search',30) %]</td>
+		</tr>
+	</tbody>
+</table>
+</div>

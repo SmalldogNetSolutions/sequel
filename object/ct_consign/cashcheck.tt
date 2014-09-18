@@ -1,0 +1,14 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('order_id',s.in.order_id) %]
+<div class="floatleft">
+<table>
+	<caption>Cash In Vendor Check</caption>
+	<tbody>
+		<tr>
+			<th>Check Number</th>
+			<td>[% s.html_input_number('check_num','',8) %][% s.html_submit('Review') %]</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</form>

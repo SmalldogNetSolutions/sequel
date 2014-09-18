@@ -1,0 +1,55 @@
+<script>
+\$(function() {
+	\$("#search").autocomplete({
+		source: function(request, response) {
+			jQuery.ajax({
+				url: "[% s.uof %]/search",
+				type: "post",
+				dataType: "json",
+				data: {
+					q: request.term,
+					payment_form: '1'
+				},
+				success: function(data) {
+					response(jQuery.map(data, function(item) {
+						return {
+							ct_consign_id: item.ct_consign_id,
+							value: item.name
+						}
+					}))
+				}
+			})
+		},
+		select: function( event, ui ) {
+			\$('#search').val(ui.item.value);
+			\$('#ct_consign_id').val(ui.item.ct_consign_id);
+		},
+		minLength: 2
+	});
+});
+</script>
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('order_id',s.in.order_id) %]
+[% s.html_hidden('process',1) %]
+<input type="hidden" name="ct_consign_id" id="ct_consign_id" value="[% hash.customer.ct_consign_id %]">
+<div class="floatleft">
+<table class="table">
+	<caption>Cashout GiftCard to Account Credit</caption>
+	<tbody>
+		<tr>
+			<th>Customer</th>
+[% UNLESS hash.customer.ct_consign_id %]
+			<td>[% s.html_search('search',30) %]</td>
+[% ELSE %]
+			<td>[% hash.customer.name %]</td>
+[% END %]
+		</tr>
+		<tr>
+			<th>GiftCardNumber</th>
+			<td>[% s.html_input('gift_card_id',s.in.gift_card_id,20) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Next','btn btn-primary') %]
+</div>
+</form>

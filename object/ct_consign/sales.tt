@@ -1,0 +1,52 @@
+<div class="floatleft" style="clear: both;">
+<table class="table">
+	<caption>Today's Sales</caption>
+	<thead>
+		<tr>
+			<th>Location</th>
+			<th class="n">Subtotal</th>
+			<th class="n">Tax</th>
+			<th class="n">Total</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td>[% l.location_name %]</td>
+			<td class="n">[% s.format_number(l.subtotal) %]</td>
+			<td class="n">[% s.format_number(l.tax) %]</td>
+			<td class="n">[% s.format_number(l.total) %]</td>
+		</tr>
+[% END %]
+		<tr>
+			<th class="n">Total</th>
+			<td class="n">[% s.format_number(hash.subtotal) %]</td>
+			<td class="n">[% s.format_number(hash.tax) %]</td>
+			<td class="n">[% s.format_number(hash.total) %]</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+<div class="floatleft" style="clear: both;">
+<table class="table">
+	<caption>Today's Payments</caption>
+	<thead>
+		<tr>
+			<th>Type</th>
+			<th class="n">Total</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN pay %]
+		<tr>
+			<td>[% l.type %]</td>
+			<td class="n">[% s.format_number(l.total) %]</td>
+		</tr>
+[% END %]
+		<tr>
+			<th class="n">Total</th>
+			<td class="n">[% s.format_number(phash.total) %]</td>
+		</tr>
+	</tbody>
+</table>
+</div>

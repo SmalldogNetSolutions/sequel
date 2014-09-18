@@ -1,0 +1,29 @@
+<div class="floatleft">
+<table>
+	<caption>Open Checks</caption>
+	<thead>
+		<tr>
+			<th>CheckID</th>
+			<th>Date</th>
+			<th>Account</th>
+			<th>Check Num</th>
+			<th>Employee</th>
+			<th class="n">Amount</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td>[% s.html_display_link('check',l.check_id,l.check_id) %]</td>
+			<td>[% s.format_date(l.check_date) %]</td>
+			<td>[% s.html_display_link('account',l.account_id,l.account_name) %]</td>
+			<td>[% IF l.void_check_num %]<span class="redtext">[% l.void_check_num %] voided</span>[% ELSIF l.void_ts %]<span class="redtext">voided</span>[% ELSE %][% l.check_num %][% END %]</td>
+			<td>[% l.employee_name %]</td>
+			<td class="n">[% s.format_number(l.amount) %]</td>
+			<td>[% IF l.void_check_num %][% s.html_display_link('gl',l.trans_id,l.trans_id) %][% ELSE %]<a href="[% s.uof %]/cancel?ct_consign_id=[% s.in.ct_consign_id %]&check_id=[% l.check_id %]" class="action">Void and Cancel</a>[% END %]</td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>

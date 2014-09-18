@@ -1,0 +1,26 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('order_id',s.in.order_id) %]
+[% s.html_hidden('process',1) %]
+[% s.html_hidden('confirm',1) %]
+<input type="hidden" name="ct_consign_id" id="ct_consign_id" value="[% hash.customer.ct_consign_id %]">
+<div class="floatleft">
+<table class="table">
+	<caption>Cashout GiftCard to Account Credit</caption>
+	<tbody>
+		<tr>
+			<th>Customer</th>
+			<td>[% hash.customer.name %]</td>
+		</tr>
+		<tr>
+			<th>GiftCardNumber</th>
+			<td>[% s.html_hidden('gift_card_id',s.in.gift_card_id,s.in.gift_card_id) %]</td>
+		</tr>
+		<tr>
+			<th>Amount</th>
+			<td>[% s.in.balance %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Process','btn btn-primary') %]
+</div>
+</form>

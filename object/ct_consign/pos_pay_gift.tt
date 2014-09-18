@@ -1,0 +1,21 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('order_id',s.in.order_id) %]
+[% s.html_hidden('process',1) %]
+[% s.html_hidden('payment_method_id',s.in.payment_method_id) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Pay [% pm.name %]</caption>
+	<tbody>
+		<tr>	
+			<th>Order Balance</th>
+			<td>[% hash.balance %]</td>
+		</tr>
+		<tr>
+			<th>Gift Amount</th>
+			<td>[% s.html_input_number('amount','',8) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Save','btn btn-primary') %]
+</div>
+</form>

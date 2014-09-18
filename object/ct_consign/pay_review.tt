@@ -1,0 +1,32 @@
+<form method="POST" action="[% s.uof %]">
+[% s.html_hidden('amount',s.in.amount) %]
+[% s.html_hidden('pay_date',s.in.pay_date) %]
+[% s.html_hidden('process',1) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Customer Accounts</caption>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th class="n">Balance</th>
+			<th class="n">UnPosted Checks</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td>[% l.name %]</td>
+			<td class="n">[% s.format_number(l.amount) %]</td>
+			<td class="n">[% s.format_number(ap.${l.vendor_id}) %]</td>
+		</tr>
+[% END %]
+		<tr>
+			<th>Total</th>
+			<td class="n">[% s.format_number(hash.amount) %]</td>
+		</tr>
+	</tbody>
+</table>
+<p><b>Note: Unposted Checks should be zero, if not don't click Create Vouchers</b></p>
+[% s.html_submit('Create Vouchers','btn btn-primary') %]
+</div>
+</form>

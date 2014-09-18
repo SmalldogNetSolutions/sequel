@@ -1,0 +1,79 @@
+<div class="floatleft">
+<table class="table">
+	<caption>Consignment Customer</caption>
+	<tbody>
+		<tr>
+			<th>ID</th>
+			<td>[% hash.ct_consign_id %]</td>
+		</tr>
+		<tr>
+			<th>Created</th>
+			<td>[% s.format_date(hash.created_ts) %]</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>[% hash.name %]</td>
+		</tr>
+		<tr>
+			<th>Consign Percent</th>
+			<td>[% hash.consign_percent %]</td>
+		</tr>
+		<tr>
+			<th>Consign Fee</th>
+			<td>[% hash.consign_fee %]</td>
+		</tr>
+		<tr>
+			<th>Account Type</th>
+			<td>[% IF hash.cash %]Cash[% ELSE %]Credit[% END %]</td>
+		</tr>
+[% IF hash.customer_id %]
+		<tr>
+			<th>CustomerID</th>
+			<td>[% s.html_display_link('customer',hash.customer_id,hash.customer_id) %]</td>
+		</tr>
+		<tr>
+			<th>Credit Balance</th>
+			<td>[% s.format_number(hash.credit_balance) %]
+			</td>
+		</tr>
+[% END %]
+[% IF hash.vendor_id %]
+		<tr>
+			<th>VendorID</th>
+			<td>[% s.html_display_link('vendor',hash.vendor_id,hash.vendor_id) %]</td>
+		</tr>
+		<tr>
+			<th>Cash Balance</th>
+			<td>[% s.format_number(hash.cash_balance) %]
+			</td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+<div class="floatleft" style="clear: both;">
+[% INCLUDE note_list.tt %]
+</div>
+[% IF hash.logs.size %]
+<div class="floatleft" style="clear: both;">
+<table class="table">
+	<caption>Log Messages</caption>
+	<thead>
+		<tr>
+			<th>When</th>
+			<th>What</th>
+			<th>Who</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN hash.logs %]
+		<tr>
+			<td>[% s.format_ts(l.created_ts) %]</td>
+			<td>[% l.log_msg %]</td>
+			<td>[% l.employee_name %]</td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+[% END %]

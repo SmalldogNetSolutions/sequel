@@ -1,0 +1,13 @@
+<div class="floatleft" style="clear: both;">
+<table>
+	<caption>Postboard <a href="[% s.uof %]?f=editmsg" class="action">Edit</a></caption>
+	<td style="width: 400px">
+[% IF s.in.f == 'editmsg' %]
+<form method="POST" action="[% s.uof %]">
+[% s.html_hidden('f','savemsg') %]
+[% s.html_textarea('msg',hash.cherryt_msg,50,20) %]<br>
+[% s.html_submit('Save') %]
+</form>
+[% ELSE %][% s.format_text(hash.cherryt_msg) %][% END %]</td>
+</table>
+</div>

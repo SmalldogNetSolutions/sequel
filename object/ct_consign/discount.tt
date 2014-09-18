@@ -1,0 +1,16 @@
+<div class="floatleft" style="clear: both;">
+<form method="POST" action="[% s.uofs %]" name="form">
+[% s.html_hidden('order_id',s.in.order_id) %]
+[% s.html_hidden('process',1) %]
+<table class="table" id="tbl">
+	<caption>Discount Order</caption>
+	<tbody>
+		<tr>
+			<th>Percent</th>
+			<td>[% s.html_input_number('discount','',4) %] (i.e. 20 for 20% off)</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit("Add Discount",'btn btn-primary') %]
+</form>
+</div>

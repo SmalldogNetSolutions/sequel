@@ -1,0 +1,13 @@
+<form method="POST" action="[% s.uofs %]">
+<div class="floatleft">
+<table>
+	<caption>Void and Cancel Check</caption>
+	<tbody>
+		<tr>
+			<th>Check Number</th>
+			<td>[% s.html_input('check_num','',5) %][% s.html_submit('Next') %]</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</form>

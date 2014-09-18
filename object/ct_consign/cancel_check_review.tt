@@ -1,0 +1,16 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('check_id',hash.check_id) %]
+<div class="floatleft">
+<table>
+	<caption>Confirm Void</caption>
+	<tbody>
+[% s.html_thtd('Check Number',hash.check_num) %]
+[% s.html_thtd('Vendor',hash.vendor_name) %]
+[% s.html_thtd('Check Date',hash.check_date) %]
+[% s.html_thtd('Amount',hash.amount) %]
+[% s.html_thtd('Cleared',s.format_boolean(hash.cleared)) %]
+	</tbody>
+</table>
+[% s.html_submit('Void and Cancel') %]
+</div>
+</form>

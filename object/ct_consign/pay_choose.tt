@@ -1,0 +1,24 @@
+[% IF s.agent %]
+<div class="span5">
+	<h2>Choose Payment Method</h2>
+	<ul class="nav nav-tabs nav-stacked">
+[% FOREACH l IN list %]
+		<li><a href="[% s.uofs %]?order_id=[% s.in.order_id %]&payment_method_id=[% l.payment_method_id %]">[% l.name %]</a></li>
+[% END %]
+	</ul>
+</div>
+</div>
+[% ELSE %]
+<div class="floatleft">
+<table class="table">
+	<caption>Choose Payment Method</caption>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td><a href="[% s.uofs %]?order_id=[% s.in.order_id %]&payment_method_id=[% l.payment_method_id %]">[% l.name %]</a></td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>
+[% END %]

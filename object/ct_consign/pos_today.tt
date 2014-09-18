@@ -1,0 +1,27 @@
+<div class="floatleft">
+<table class="table">
+	<caption>Todays Closed Orders</caption>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Order Timestamp</th>
+			<th>Customer</th>
+			<th>Location</th>
+			<th>Employee</th>
+			<th class="n">Total</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td>[% s.html_display_link('order',l.order_id,l.order_id) %]</td>
+			<td>[% s.format_ts(l.order_ts) %]</td>
+			<td>[% s.html_display_link('customer',l.customer_id,l.customer_name) %]</td>
+			<td>[% l.location_name %]</td>
+			<td>[% l.employee_name %]</td>
+			<td class="n">[% s.format_number(l.total) %]</td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>

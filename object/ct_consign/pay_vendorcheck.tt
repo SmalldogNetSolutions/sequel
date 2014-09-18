@@ -1,0 +1,24 @@
+<div class="floatleft">
+<table class="table">
+	<caption>Un-Cashed Checks</caption>
+	<thead>
+		<tr>
+			<th>CheckNum</th>
+			<th>Check Date</th>
+			<th class="n">Amount</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+[% FOREACH l IN list %]
+		<tr>
+			<td>[% l.check_num %]</td>
+			<td>[% l.check_date %]</td>
+			<td class="n">[% l.amount %]</td>
+			<td>
+				<a href="[% s.uofs %]?ct_consign_id=[% s.in.ct_consign_id %]&process=1&order_id=[% s.in.order_id %]&payment_method_id=[% s.in.payment_method_id %]&check_id=[% l.check_id %]" class="action">Apply</a></td>
+		</tr>
+[% END %]
+	</tbody>
+</table>
+</div>

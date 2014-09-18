@@ -1,0 +1,42 @@
+<form method="POST" action="[% s.uof %]">
+[% s.html_hidden('ct_consign_id',s.in.ct_consign_id) %]
+[% s.html_hidden('process',1) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Consignment Customer</caption>
+	<tbody>
+		<tr>
+			<th>ID</th>
+			<td>[% hash.ct_consign_id %]</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>[% s.html_input('name',hash.name,50) %]</td>
+		</tr>
+		<tr>
+			<th>Consign Percent</th>
+			<td>[% s.html_input_number('consign_percent',hash.consign_percent,5) %]</td>
+		</tr>
+		<tr>
+			<th>Consign Fee</th>
+			<td>[% s.html_input_number('consign_fee',hash.consign_fee,8) %]</td>
+		</tr>
+		<tr>
+			<th>Account Type</th>
+			<td>
+			[% s.html_radio('cash','1',hash.cash,'Cash') %]
+			[% s.html_radio('cash','0',hash.cash,'Credit') %]
+			</td>
+		<tr>
+			<th>Credit Balance</th>
+			<td>[% s.format_number(hash.credit_balance) %]</td>
+		</tr>
+		<tr>
+			<th>Cash Balance</th>
+			<td>[% s.format_number(hash.cash_balance) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Update','btn btn-primary') %]
+</div>
+</form>

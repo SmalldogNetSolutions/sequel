@@ -1,0 +1,29 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('check_num',s.in.check_num) %]
+[% s.html_hidden('confirm',1) %]
+[% s.html_hidden('order_id',s.in.order_id) %]
+<div class="floatleft">
+<table>
+	<caption>Confirm</caption>
+	<tbody>
+		<tr>
+			<th>Check Number</th>
+			<td>[% s.in.check_num %]</td>
+		</tr>
+		<tr>
+			<th>Check Date</th>
+			<td>[% check.check_date %]</td>
+		</tr>
+		<tr>
+			<th>Amount</th>
+			<td>[% check.amount %]</td>
+		</tr>
+		<tr>
+			<th>Pay To</th>
+			<td>[% check.name %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Process') %]
+</div>
+</form>

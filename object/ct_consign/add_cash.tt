@@ -1,0 +1,28 @@
+<form method="POST" action="[% s.uofs %]">
+[% s.html_hidden('ct_consign_id',s.in.ct_consign_id) %]
+[% s.html_hidden('process',1) %]
+<div class="floatleft">
+<table class="table">
+	<caption>Add Cash</caption>
+	<tbody>
+		<tr>
+			<th>ID</th>
+			<td>[% hash.ct_consign_id %]</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>[% hash.name %]</td>
+		</tr>
+		<tr>
+			<th>Current Cash Balance</th>
+			<td>[% s.format_number(hash.cash_balance) %]</td>
+		</tr>
+		<tr>
+			<th>Add Cash Amount</th>
+			<td>[% s.html_input_number('amount','',8) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Update','btn btn-primary') %]
+</div>
+</form>

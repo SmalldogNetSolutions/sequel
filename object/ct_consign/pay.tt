@@ -1,0 +1,18 @@
+<form method="POST" action="[% s.uof %]">
+<div class="floatleft">
+<table class="table">
+	<caption>Pay Cash Accounts</caption>
+	<tbody>
+		<tr>
+			<th>Amount Exeeding</th>
+			<td>[% s.html_input_number('amount',s.in.amount,5) %]</td>
+		</tr>
+		<tr>
+			<th>Sales Before Date</th>
+			<td>[% s.html_input_calendar('pay_date',s.in.pay_date) %]</td>
+		</tr>
+	</tbody>
+</table>
+[% s.html_submit('Review','btn btn-primary') %]
+</div>
+</form>
