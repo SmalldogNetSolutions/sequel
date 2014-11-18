@@ -96,6 +96,67 @@ sub main {
 			$s->db_update_key('ct_consign','ct_consign_id',$hash{ct_consign_id},\%update);
 		}
 
+		if ($hash{cash} ne $update{cash}) {
+			# we changed from cash to credit or something, so move our balance over
+			# what was the difference in consign fee?
+			$hash{diff_percent} = sprintf "%.4f", $update{consign_percent}-$hash{consign_percent};
+			if ($update{cash}) {
+				if ($hash{credit_balance} ne '0.00' && $hash{credit_balance}) {
+					$hash{old_balance} = $hash{credit_balance};
+					$hash{old_ref} = 'customer';
+					$hash{old_ref_id} = $hash{customer_id};
+					$hash{new_ref} = 'vendor';
+					$hash{new_ref_id} = $update{vendor_id} || $hash{vendor_id};
+				}
+			} else {
+				if ($hash{cash_balance} ne '0.00' && $hash{cash_balance}) {
+					$hash{old_balance} = $hash{cash_balance};
+					$hash{old_ref} = 'vendor';
+					$hash{old_ref_id} = $hash{vendor_id};
+					$hash{new_ref} = 'customer';
+					$hash{new_ref_id} = $update{customer_id} || $hash{customer_id};
+				}
+			}
+
+			if ($hash{new_ref}) {
+				if ($hash{diff_percent} > 0) {
+					$hash{new_balance} = sprintf "%.2f", ($hash{old_balance}*($hash{diff_percent}+1.0));
+				} else {
+					$hash{new_balance} = sprintf "%.2f", ($hash{old_balance}/(abs($hash{diff_percent})+1.0));
+				}
+
+				$hash{balance_diff} = sprintf "%.2f", $hash{new_balance}-$hash{old_balance};
+				croak "Missing new_ref_id" unless($hash{new_ref_id});
+
+				#croak "error: ".Data::Dumper->Dump([\%hash]);
+				# create a transaction that moves the balace over and write a log message
+				my $trans_id = $s->db_insert('transactions',{
+					funit_id => 1000,
+					ref => 'ct_consign',
+					ref_id => $hash{ct_consign_id},
+					description => 'Transfer account balance'
+					},'trans_id');
+
+				$s->db_q("SELECT gl_debit(?,?,?,gl_account('cc'),NULL,?,NULL)",undef,
+					v => [ $trans_id, $hash{old_ref}, $hash{old_ref_id}, $hash{old_balance} ]);
+
+				$s->db_q("SELECT gl_credit(?,?,?,gl_account('cc'),NULL,?,NULL)",undef,
+					v => [ $trans_id, $hash{new_ref}, $hash{new_ref_id}, $hash{new_balance} ]);
+
+				$s->db_q("SELECT gl_debit(?,NULL,NULL,gl_account('cogs'),NULL,?,NULL)",undef,
+					v => [ $trans_id, $hash{balance_diff} ])
+					if ($hash{balance_diff} ne '0.00');
+
+				$s->db_q("SELECT post_transaction(?)",undef, v => [ $trans_id ]);
+
+				if ($update{cash}) {
+					$s->log('ct_consign',$hash{ct_consign_id},"Converted credit balance of $hash{old_balance} to cash balance of $hash{new_balance} (change of $hash{balance_diff})");
+				} else {
+					$s->log('ct_consign',$hash{ct_consign_id},"Converted cash balance of $hash{old_balance} to credit balance of $hash{new_balance} (change of $hash{balance_diff})");
+				}
+			}
+		}
+
 		$s->{dbh}->commit;
 
 		$s->redirect();
