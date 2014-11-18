@@ -37,7 +37,7 @@ AND cash IS TRUE;
 
 INSERT INTO transactions (funit_id, ref_date, ref, ref_id, description)
 SELECT 1000, date(now()), 'ct_consign', x.ct_consign_id, 'Cash/Credit Adjustment'
-FROM tmp_cashcredit_fix x
+FROM tmp_cashcredit_fix x;
 
 SELECT gl_debit(t.trans_id,'vendor',x.vendor_id,gl_account('cc'),NULL,x.cash_balance,NULL)
 FROM tmp_cashcredit_fix x
