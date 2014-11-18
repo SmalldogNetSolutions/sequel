@@ -35,7 +35,8 @@ sub main {
 
 		my @list = $s->db_q("
 			SELECT v.*, vv.balance as cash_balance,
-				cc.balance as credit_balance
+				cc.balance as credit_balance,
+				(COALESCE(vv.balance,0)+COALESCE(cc.balance,0))::numeric as total_balance
 			FROM ct_consign v
 				LEFT JOIN (
 					SELECT p.ref_id as vendor_id, COALESCE(sum(p.credit-p.debit),0.00)::numeric as balance

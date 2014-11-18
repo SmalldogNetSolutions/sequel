@@ -73,6 +73,9 @@ sub main {
 		v => [ $hash{customer_id} ])
 		if ($hash{customer_id});
 
+	$hash{total_balance} = sprintf "%.2f", $hash{cash_balance}+$hash{credit_balance}
+		if ($hash{customer_id} && $hash{vendor_id});
+
 	$s->add_action(function => 'list',
 		object => 'gl',
 		icon => 'list-alt',

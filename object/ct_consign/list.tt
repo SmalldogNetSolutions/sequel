@@ -1,13 +1,14 @@
 <div class="floatleft">
-<table class="table">
+<table class="table stickyheader">
 	<caption>Consignment Accounts</caption>
 	<thead>
 		<tr>
 			<th>ID</th>
 			<th>Name</th>
 			<th>Type</th>
-			<th class="n">Cash Balance</th>
-			<th class="n">Credit Balance</th>
+			<th class="n">Cash</th>
+			<th class="n">Credit</th>
+			<th class="n">Total</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -18,6 +19,7 @@
 			<td>[% IF l.cash %]CA[% END %]</td>
 			<td class="n">[% s.format_number(l.cash_balance) %]</td>
 			<td class="n">[% s.format_number(l.credit_balance) %]</td>
+			<td class="n">[% s.format_number(l.total_balance) %]</td>
 		</tr>
 [% END %]
 	</tbody>

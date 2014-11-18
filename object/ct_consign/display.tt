@@ -48,6 +48,12 @@
 			</td>
 		</tr>
 [% END %]
+[% IF hash.vendor_id && hash.customer_id %]
+		<tr>
+			<th>Total Balance</th>
+			<td><b>[% s.format_number(hash.total_balance) %]</b></td>
+		</tr>
+[% END %]
 	</tbody>
 </table>
 </div>
