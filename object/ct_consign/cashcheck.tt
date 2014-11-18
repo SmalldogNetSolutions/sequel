@@ -6,7 +6,7 @@
 	<tbody>
 		<tr>
 			<th>Check Number</th>
-			<td>[% s.html_input_number('check_num','',8) %][% s.html_submit('Review') %]</td>
+			<td>[% s.html_input('check_num','',8) %][% s.html_submit('Review') %]</td>
 		</tr>
 	</tbody>
 </table>

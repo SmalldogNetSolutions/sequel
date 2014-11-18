@@ -5,7 +5,7 @@
 	<tbody>
 		<tr>
 			<th>Amount Exeeding</th>
-			<td>[% s.html_input_number('amount',s.in.amount,5) %]</td>
+			<td>[% s.html_input('amount',s.in.amount,5) %]</td>
 		</tr>
 		<tr>
 			<th>Sales Before Date</th>

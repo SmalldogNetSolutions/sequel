@@ -376,7 +376,11 @@ sub pay {
 						} elsif ($tmp{amount} < $s->{in}{amount}) {
 							unless($s->{in}{use_amount}) {
 							#	$s->{content} .= $s->dump(\%tmp);
-								$s->tt('ct_consign/pay_overcredit.tt', { s => $s, hash => \%tmp });
+								if ($tmp{cash}) {
+									$s->tt('ct_consign/pay_overcredit_cash.tt', { s => $s, hash => \%tmp });
+								} else {
+									$s->tt('ct_consign/pay_overcredit.tt', { s => $s, hash => \%tmp });
+								}
 								return;
 							}
 							$s->{in}{amount} = $s->{in}{use_amount};
@@ -639,6 +643,35 @@ sub close {
 			",undef,
 			v => [ $customer_payment_id ]);
 
+		# is this customer payment store credit, and is this customer a cash customer
+		# if so we need to reverse the balance that we just put into customer credit
+		# under the customer reference, and instead put it under the vendor account
+		my %tmp = $s->db_q("
+			SELECT c.cash, c.vendor_id, t.trans_id, t.post_date, p.post_id, p.ref, p.ref_id
+			FROM customer_payments cp
+				JOIN transactions t ON cp.customer_payment_id=t.ref_id
+					AND t.ref='customer_payment'
+				JOIN postings p ON t.trans_id=p.trans_id
+					AND p.account_id=gl_account('cc')
+				JOIN ct_consign c ON cp.customer_id=c.customer_id
+			WHERE cp.customer_payment_id=?
+			",'hash',
+			v => [ $customer_payment_id ]);
+		
+		if ($tmp{cash} && $tmp{vendor_id} && $tmp{post_id}) {
+			$s->db_q("UPDATE transactions SET post_date=NULL, ref_date=post_date
+				WHERE trans_id=?
+				",undef,
+				v => [ $tmp{trans_id} ]);
+
+			$s->db_q("UPDATE postings SET ref='vendor', ref_id=?
+				WHERE post_id=?
+				",undef,
+				v => [ $tmp{vendor_id}, $tmp{post_id} ]);
+			
+			$s->db_q("SELECT post_transaction(?)",undef, v => [ $tmp{trans_id} ]);
+		}
+
 		$s->db_q("UPDATE order_payments SET customer_payment_id=?
 			WHERE order_payment_id=?
 			",undef,
@@ -686,6 +719,7 @@ sub close {
 				WHERE customer_payment_id=?
 				",undef,
 				v => [ $till_transaction_id, $customer_payment_id ]);
+
 		}
 	}
 

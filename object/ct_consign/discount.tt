@@ -7,7 +7,7 @@
 	<tbody>
 		<tr>
 			<th>Percent</th>
-			<td>[% s.html_input_number('discount','',4) %] (i.e. 20 for 20% off)</td>
+			<td>[% s.html_input('discount','',4) %] (i.e. 20 for 20% off)</td>
 		</tr>
 	</tbody>
 </table>

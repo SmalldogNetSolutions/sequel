@@ -6,7 +6,7 @@
 	<tbody>
 		<tr>
 			<th>Amount</th>
-			<td>[% s.html_input_number('gift_amount','',8) %]</td>
+			<td>[% s.html_input('gift_amount','',8) %]</td>
 		</tr>
 		<tr>
 			<th>Name/Description</th>
@@ -24,7 +24,7 @@
 	<caption>Apply Amount<br>to Consignment Account</caption>
 		<tr>
 			<th>Gift Amount</th>
-			<td>[% s.html_input_number('account_amount','',8) %]</td>
+			<td>[% s.html_input('account_amount','',8) %]</td>
 		</tr>
 	</tbody>
 </table>

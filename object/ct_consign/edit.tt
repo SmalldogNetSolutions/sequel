@@ -15,11 +15,11 @@
 		</tr>
 		<tr>
 			<th>Consign Percent</th>
-			<td>[% s.html_input_number('consign_percent',hash.consign_percent,5) %]</td>
+			<td>[% s.html_input('consign_percent',hash.consign_percent,5) %]</td>
 		</tr>
 		<tr>
 			<th>Consign Fee</th>
-			<td>[% s.html_input_number('consign_fee',hash.consign_fee,8) %]</td>
+			<td>[% s.html_input('consign_fee',hash.consign_fee,8) %]</td>
 		</tr>
 		<tr>
 			<th>Account Type</th>

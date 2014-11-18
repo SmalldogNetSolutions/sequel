@@ -43,8 +43,8 @@ function addRowToTable()
 	</thead>
 	<tbody>
 		<tr>
-			<td>[% s.html_input_number('line:1:item_id','',6) %]</td>
-			<td>[% s.html_input_number('line:1:unit_price','',8) %]</td>
+			<td>[% s.html_input('line:1:item_id','',6) %]</td>
+			<td>[% s.html_input('line:1:unit_price','',8) %]</td>
 		</tr>
 	</tbody>
 </table>

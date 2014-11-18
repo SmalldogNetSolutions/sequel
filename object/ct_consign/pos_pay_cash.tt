@@ -8,7 +8,7 @@
 	<tbody>
 		<tr>
 			<th>Cash Amount</th>
-			<td>[% s.html_input_number('amount','',8) %]</td>
+			<td>[% s.html_input('amount','',8) %]</td>
 		</tr>
 	</tbody>
 </table>

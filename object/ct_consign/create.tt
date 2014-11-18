@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<th>ID</th>
-			<td>[% s.html_input_number('ct_consign_id',s.in.ct_consign_id,5) %]
+			<td>[% s.html_input('ct_consign_id',s.in.ct_consign_id,5) %]
 			(leave blank for automatic ID assignment)
 			</td>
 		</tr>
@@ -23,13 +23,13 @@
 		</tr>
 		<tr>
 			<th>Consign Percent</th>
-			<td>[% s.html_input_number('consign_percent',s.in.consign_percent,4) %]
+			<td>[% s.html_input('consign_percent',s.in.consign_percent,4) %]
 			(i.e: 0.35 for 35%)
 			</td>
 		</tr>
 		<tr>
 			<th>Consign Fee</th>
-			<td>[% s.html_input_number('consign_fee',s.in.consign_fee,8) %] (for vendors)</td>
+			<td>[% s.html_input('consign_fee',s.in.consign_fee,8) %] (for vendors)</td>
 		</tr>
 	</tbody>
 </table>
