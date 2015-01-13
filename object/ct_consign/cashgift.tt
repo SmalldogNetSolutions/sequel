@@ -34,7 +34,7 @@
 <input type="hidden" name="ct_consign_id" id="ct_consign_id" value="[% hash.customer.ct_consign_id %]">
 <div class="floatleft">
 <table class="table">
-	<caption>Cashout GiftCard to Account Credit</caption>
+	<caption>Apply GiftCard to Account</caption>
 	<tbody>
 		<tr>
 			<th>Customer</th>

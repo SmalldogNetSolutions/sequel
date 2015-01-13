@@ -1488,7 +1488,7 @@ sub display {
 	$s->add_action(function => 'pos',
 		subroutine => 'cashgift',
 		icon => 'download-alt',
-		title => 'Cashout GiftCert',
+		title => 'Apply GiftCert',
 		params => "order_id=$hash{order_id}")
 		unless(scalar @{$hash{items}});
 
