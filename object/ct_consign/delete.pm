@@ -1,4 +1,4 @@
-package cherryt::object::ct_consign::delete;
+package sequel::object::ct_consign::delete;
 
 use strict;
 use Carp;

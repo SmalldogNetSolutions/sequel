@@ -1,4 +1,4 @@
-package cherryt::object::ct_consign::pay;
+package sequel::object::ct_consign::pay;
 
 use strict;
 use Carp;

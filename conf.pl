@@ -1,25 +1,25 @@
-if (not -e "$ENV{HTTPD_ROOT}/logs/cherryt") {
-    die "Need '$ENV{HTTPD_ROOT}/logs/cherryt' for logging.";
+if (not -e "$ENV{HTTPD_ROOT}/logs/sequel") {
+    die "Need '$ENV{HTTPD_ROOT}/logs/sequel' for logging.";
 }
 # now put it all together
 my $common = <<END;
-    Errorlog        logs/cherryt/error_log
-    CustomLog       logs/cherryt/access_log sdnfw
-    DocumentRoot    "/data/cherryt/content"
+    Errorlog        logs/sequel/error_log
+    CustomLog       logs/sequel/access_log sdnfw
+    DocumentRoot    "/data/sequel/content"
     DirectoryIndex  index.html index.php
 	PerlPassEnv		HTTPD_ROOT
     PerlSetVar  	HTTPD_ROOT $ENV{HTTPD_ROOT}
 	SetEnv			HTMLDOC_NOCGI yes
 	SetEnv			BASE_URL /erp
 	SetEnv			OBJECT_BASE erp
-	SetEnv			CBASE cherryt
+	SetEnv			CBASE sequel
 	SetEnv			APACHE_SERVER_NAME $ENV{APACHE_SERVER_NAME}
 	SetEnv			IP_ADDR $ENV{IP_ADDR}
 END
 
 my %config;
-if (-f "$ENV{HTTPD_ROOT}/conf/cherryt.conf") {
-	open F, "$ENV{HTTPD_ROOT}/conf/cherryt.conf";
+if (-f "$ENV{HTTPD_ROOT}/conf/sequel.conf") {
+	open F, "$ENV{HTTPD_ROOT}/conf/sequel.conf";
 	while (my $l = <F>) {
 		chomp $l;
 		next if ($l =~ m/^#/);
@@ -32,7 +32,7 @@ if (-f "$ENV{HTTPD_ROOT}/conf/cherryt.conf") {
 }
 
 $common .= <<END;
-    PerlRequire 	"$ENV{HTTPD_ROOT}/cherryt/startup.pl"
+    PerlRequire 	"$ENV{HTTPD_ROOT}/sequel/startup.pl"
 
 	ServerName		$config{SERVER_NAME}
 	<Location /erp>

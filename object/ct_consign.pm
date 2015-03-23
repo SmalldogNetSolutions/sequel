@@ -1,4 +1,4 @@
-package cherryt::object::ct_consign;
+package sequel::object::ct_consign;
 
 use strict;
 use Carp;
