@@ -79,12 +79,15 @@ sub main {
 				$update{vendor_id} = $vendor_id;
 			} elsif (!$update{cash} && !$hash{customer_id}) {
 				# create a customer account
-				my $customer_id = $s->db_insert('customers',{
-					email_phone => $hash{ct_consign_id},
-					company => $hash{name},
+				my $profile_id = $s->db_insert('profiles',{
+					organization => $hash{name},
 					individual => 0,
-					},'customer_id');
+					},'profile_id');
 
+				my $customer_id = $s->db_insert('customers',{
+					profile_id => $profile_id,
+					},'customer_id');
+	
 				$update{customer_id} = $customer_id;
 			}
 		}

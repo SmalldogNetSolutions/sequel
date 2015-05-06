@@ -73,11 +73,13 @@ sub main {
 					consign_percent => $s->{in}{consign_percent},
 					});
 			} else {
-				my $customer_id = $s->db_insert('customers',{
-					employee_id => $s->{employee_id},
-					email_phone => $s->{in}{ct_consign_id},
-					company => $s->{in}{name},
+				my $profile_id = $s->db_insert('profiles',{
+					organization => $s->{in}{name},
 					individual => 0,
+					},'profile_id');
+
+				my $customer_id = $s->db_insert('customers',{
+					profile_id => $profile_id,
 					},'customer_id');
 	
 				$s->db_insert('ct_consign',{
