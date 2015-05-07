@@ -488,10 +488,13 @@ sub _make_customer {
 	unless($ctconsign{customer_id}) {
 		$s->{dbh}->begin_work;
 
-		my $customer_id = $s->db_insert('customers',{
-			email_phone => $ctconsign{ct_consign_id},
-			company => $ctconsign{name},
+		my $profile_id = $s->db_insert('profiles',{
+			organization => $ctconsign{name},
 			individual => 0,
+			},'profile_id');
+
+		my $customer_id = $s->db_insert('customers',{
+			profile_id => $profile_id,
 			},'customer_id');
 
 		$s->db_q("UPDATE ct_consign SET customer_id=?
