@@ -14,6 +14,14 @@ sub main {
 		ORDER BY name
 		",'arrayhash');
 
+	if (scalar @locations == 1) {
+			$s->add_action(function => 'pos',
+				subroutine => 'create',
+				icon => 'plus',
+				title => "New Sale",
+				params => "location_id=$locations[0]{location_id}");
+	}
+
 	foreach my $ref (@locations) {
 		$s->add_action(function => 'pos',
 			icon => 'shopping-cart',
