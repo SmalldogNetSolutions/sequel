@@ -1089,12 +1089,13 @@ sub cashcheck {
 	if ($s->{in}{check_num}) {
 		my %check = $s->db_q("
 			SELECT c.check_id, c.amount, cc.vendor_id, cc.customer_id,
-				cc.name, cc.ct_consign_id, c.check_date,
+				cc.name, cc.ct_consign_id, c.check_date, v.profile_id,
 				(SELECT array_to_string(array_agg(v.voucher_id),',')
 				FROM voucher_checks v
 				WHERE v.check_id=c.check_id) as voucher_ids
 			FROM checks c
 				JOIN ct_consign cc ON c.vendor_id=cc.vendor_id
+				JOIN vendors v ON c.vendor_id=v.vendor_id
 			WHERE c.check_num=?
 			",'hash',
 			v => [ $s->{in}{check_num} ]);
@@ -1141,10 +1142,7 @@ sub cashcheck {
 			# wow, what a pain in the ass....
 			unless($check{customer_id}) {
 				$check{customer_id} = $s->db_insert('customers',{
-					employee_id => $s->{employee_id},
-					email_phone => $check{ct_consign_id},
-					company => $check{name},
-					individual => 0,
+					profile_id => $check{profile_id},
 					},'customer_id');
 
 				$s->db_q("UPDATE ct_consign SET customer_id=?
