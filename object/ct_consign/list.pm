@@ -102,7 +102,7 @@ sub main {
 				FROM orders o
 				WHERE o.order_type='order'
 				AND o.order_status='closed'
-				AND date(o.close_ts)=date(now())
+				AND date(o.close_ts)=date(tz_now())
 				) x
 				JOIN orders_v_summary v ON x.order_id=v.order_id
 				JOIN locations l ON x.location_id=l.location_id
@@ -116,7 +116,7 @@ sub main {
 				sum(p.amount) as total
 			FROM customer_payments p
 				JOIN payment_methods pm ON p.payment_method_id=pm.payment_method_id
-			WHERE date(p.process_ts)=date(now())
+			WHERE date(p.process_ts)=date(tz_now())
 			GROUP BY 1
 			ORDER BY 1
 			",'arrayhash');

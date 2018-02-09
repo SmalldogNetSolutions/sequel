@@ -89,7 +89,7 @@ sub today {
 			) as total
 		FROM orders_v v
 		WHERE v.location_id=?
-		AND date(v.order_ts)=date(now())
+		AND date(v.order_ts)=date(tz_now())
 		AND v.order_type='order'
 		AND v.order_status='closed'
 		ORDER BY created_ts desc
@@ -641,7 +641,7 @@ sub close {
 			gift_card_id => $ref->{gift_card_id},
 			},'customer_payment_id');
 
-		$s->db_q("UPDATE customer_payments SET process_ts=now()
+		$s->db_q("UPDATE customer_payments SET process_ts=tz_now()
 			WHERE customer_payment_id=?
 			",undef,
 			v => [ $customer_payment_id ]);
